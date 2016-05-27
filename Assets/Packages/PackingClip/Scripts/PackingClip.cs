@@ -24,6 +24,7 @@ namespace mattatz.PackingClip {
         }
 
         [SerializeField] PackingClipMode mode = PackingClipMode.PackingClipArea;
+        [SerializeField] Vector2 offset;
         [SerializeField] PackingArea[] data;
         [SerializeField] Color emptyColor = Color.black;
 
@@ -43,9 +44,10 @@ namespace mattatz.PackingClip {
                 buffer.SetData(data);
             }
 
-            material.SetColor("_Color", emptyColor);
+            material.SetVector("_Offset", offset);
             material.SetBuffer("_Data", buffer);
             material.SetInt("_DataCount", data.Length);
+            material.SetColor("_Color", emptyColor);
 
             Graphics.Blit(src, dst, material, (int)mode);
         }

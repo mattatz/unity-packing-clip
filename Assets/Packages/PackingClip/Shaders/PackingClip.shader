@@ -3,6 +3,7 @@
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
 		_Color ("Color", Color) = (0, 0, 0, 1)
+		_Offset ("Offset", Vector) = (0, 0, -1, -1)
 	}
 
 	SubShader {
@@ -26,7 +27,8 @@
 
 		sampler2D _MainTex;
 		float4 _MainTex_TexelSize;
-
+		
+		float2 _Offset;
 		fixed4 _Color;
 
 		struct PackingArea {
@@ -89,7 +91,6 @@
 
 			fixed4 frag(v2f i) : SV_Target{
 				return clip(_MainTex, i.uv);
-				return packing(_MainTex, i.uv);
 			}
 
 			ENDCG
@@ -102,7 +103,8 @@
 			#pragma fragment frag
 
 			fixed4 frag(v2f i) : SV_Target{
-				return packing(_MainTex, i.uv);
+				float2 uv = i.uv + _MainTex_TexelSize.xy * _Offset;
+				return packing(_MainTex, uv);
 			}
 
 			ENDCG
